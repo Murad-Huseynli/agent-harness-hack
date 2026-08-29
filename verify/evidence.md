@@ -24,4 +24,4 @@ Never green by assumption.
 | R2 — harness does the work (MCP / sandbox / subagents / reconnect) | NOT RUN | |
 | R3 — approval gate blocks a real irreversible action | NOT RUN | |
 | R4 — Bright Data drift detected, repaired, logged | NOT RUN | |
-| R6 — Qodo reviewed a PR, findings addressed before merge | NOT RUN | |
+| R6 — Qodo reviewed a PR, findings addressed before merge | **PASS** | [PR #1](https://github.com/Murad-Huseynli/agent-harness-hack/pull/1) — `/agentic_review` run 2026-08-29; `qodo-code-review[bot]` returned 3 findings (1 High, 2 Medium); all 3 fixed in commits on the PR branch; re-review requested; squash-merged as `5c719ee`. Details in README § Qodo Code Review Evidence. |

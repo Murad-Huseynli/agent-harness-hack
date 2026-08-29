@@ -5,6 +5,20 @@ Qodo × OpenAI) — San Francisco, 29 August 2026, in one day.
 
 > _One-liner goes here once `brief.md` is filled in._
 
+## Research
+
+The idea is backed by a full literature review, a novelty audit against the five closest
+published papers, structured ideation, and a three-hat adversarial review — all completed
+before any product code. **Start at [`research/README.md`](research/README.md).**
+
+The claim, stated honestly:
+
+> A production agent harness's human-approval queue is an already-instrumented
+> preference-elicitation instrument that current systems discard as a boolean. We read it as
+> structured evidence — approve, deny, edit-then-approve, choose-among, re-run, hesitate —
+> into a per-user posterior over *attributes of proposed actions*, and use that posterior to
+> decide the agent's authority over irreversible actions: act, or ask.
+
 ## What it does
 
 TBD — see [`brief.md`](./brief.md).

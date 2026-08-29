@@ -49,6 +49,47 @@ npm run judge    # independent model-graded pass against rubric.md
 
 The build rules, gates, and scraper contract live in [`CLAUDE.md`](./CLAUDE.md).
 
+## Qodo Code Review Evidence
+
+Every change reaches `main` through a pull request reviewed by Qodo's agentic review.
+
+### PR #1 — [fix(brightdata): replace guessed env var, pin verified CLI surface](https://github.com/Murad-Huseynli/agent-harness-hack/pull/1)
+
+Run with `/agentic_review`. Qodo returned three findings. **All three were valid and all
+three were fixed before merge.**
+
+**Finding 3 (High) — "Command signatures remain guessed."**
+The scraper contract listed `brightdata scraper create ...` with literal ellipses, omitting
+required positional arguments — while `CLAUDE.md` only required `--help` for commands
+*absent* from the page. Qodo identified the trap: an assistant would treat the listed
+commands as verified and still have to guess their arguments, "producing invalid or unsafe
+repair commands." This was a flaw in the rule's design, not a typo.
+
+*Fix:* installed the CLI and captured real signatures —
+`scraper heal <collector_id> <prompt>`, `scraper approve <collector_id>` — and rewrote the
+rule so a command counts as verified only when its **full signature including positional
+arguments** is documented. Raw `--help` output committed verbatim to
+[`scrapers/cli-help-output.md`](scrapers/cli-help-output.md).
+
+**Finding 2 (Medium) — "Valid bdata alias forbidden."**
+The doc asserted "the binary is `brightdata`, not `bdata`." Qodo flagged this as false.
+Verified against the npm manifest: `{ brightdata: 'dist/index.js', bdata: 'dist/index.js' }`
+— both install, identical entry point. The wrong claim had already been used to tell a
+teammate their command was invented.
+
+*Fix:* corrected, and kept **visible** in
+[`scrapers/brightdata-cli.md`](scrapers/brightdata-cli.md) rather than silently edited.
+
+**Finding 1 (Medium) — "Cli behavior lacks execution evidence."**
+A functional claim about which env var the CLI reads was sourced from documentation, not
+execution.
+
+*Fix:* real `--help` output committed; the env-var precedence claim downgraded to
+explicitly unconfirmed pending an authenticated `brightdata config get`.
+
+Re-review requested on the same PR after the fixes, so the history shows
+**review → response → verification**.
+
 ## License
 
 MIT — see [LICENSE](./LICENSE).

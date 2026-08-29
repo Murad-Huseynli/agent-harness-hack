@@ -1,0 +1,20 @@
+{
+  "name": "agent-harness-hack",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agent Harness Hackathon — SF, 2026-08-29",
+  "license": "MIT",
+  "scripts": {
+    "probe": "node verify/probe.mjs",
+    "record": "node verify/record-video.mjs",
+    "judge": "tsx scripts/judge.ts"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.104.1",
+    "@types/node": "^20",
+    "playwright": "^1.60.0",
+    "tsx": "^4.22.4",
+    "typescript": "^5"
+  }
+}

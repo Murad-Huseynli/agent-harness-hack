@@ -1,0 +1,16 @@
+{
+  "//": "Drives verify/probe.mjs and verify/record-video.mjs. Add steps as the UI exists.",
+  "url": "http://localhost:3000",
+  "viewports": [
+    ["desktop", 1512, 982],
+    ["mobile", 390, 844]
+  ],
+  "steps": [
+    { "shot": "landing", "fullPage": true }
+  ],
+  "video": {
+    "title": "TBD",
+    "subtitle": "TBD",
+    "steps": []
+  }
+}

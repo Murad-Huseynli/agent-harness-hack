@@ -33,3 +33,9 @@ scrapers/data/*
 graph.json
 GRAPH_REPORT.md
 graphify-out/
+
+# Planning artifacts — held back from the public repo until we choose what to publish.
+# They contain LifeOS filesystem paths and private-venture detail. Publication is a
+# one-way door; adding files later is easy, unpublishing is not.
+briefs/
+wiki/

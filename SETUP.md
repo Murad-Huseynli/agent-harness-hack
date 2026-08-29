@@ -18,8 +18,8 @@ verified yet — do not trust it until you have run it. Nothing here is guessed.
 | Build harness (rubrics, probe, judge, scraper contract) | ✅ committed |
 | Codex CLI | ✅ `codex-cli 0.144.1`, ChatGPT OAuth |
 | `gh` CLI | ✅ authed as `Murad-Huseynli` |
-| **TrueForge installed** | ⬜ **not yet — blocker #1** |
-| Daytona key | ⬜ absent |
+| **TrueForge installed + RUNNING** | ✅ `v0.1.4` up on **http://localhost:8790** (`HTTP 200`) |
+| Daytona key | ⬜ absent — **$200 free compute, no card required** (daytona.io/pricing) |
 | Bright Data connected | ⬜ account + $50 credits exist, not wired |
 | Qodo GitHub App on this repo | ⬜ unverified — check in the GitHub UI |
 | OpenAI platform key | ⬜ $50 credits added, key not in any `.env` |
@@ -35,14 +35,29 @@ git clone https://github.com/Murad-Huseynli/agent-harness-hack
 cd agent-harness-hack && npm install
 npx @truefoundry/trueforge@latest          # local mode, SQLite, one process
 ```
-Then answer these four and write the answers straight into this file:
-1. What is the exact `.env` filename and which env vars does it read?
-2. How are MCP servers registered — what file, what shape?
-3. How is the Daytona sandbox enabled, and which env var?
-4. What port/URL does the chat UI come up on?
+✅ **Already verified — it boots and serves.** Real CLI output:
 
-These are **not documented in the README** — the repo's README has the install command
-and nothing else. Get them from the running process and the quickstart, then commit them.
+```
+Usage:
+  npx @truefoundry/trueforge
+  npx @truefoundry/trueforge --port <n>
+
+TrueForge v0.1.4. Start the agent server.
+Defaults to standalone mode (SQLite, no Redis) — local use only, not production-safe.
+Set STANDALONE=false with Postgres and Redis for multi-replica peering.
+
+Options:
+  --port <n>   HTTP port (default: 8790, or PORT env)
+```
+
+Open **http://localhost:8790**. Then wire, in this order, from the real docs:
+1. **Model credential** — configured separately and referenced by name → https://trueforge.dev/models
+2. **Daytona sandbox** — needs an API key with permission to create sandboxes *and*
+   create/use the configured snapshot → https://trueforge.dev/sandbox
+3. **MCP servers** — no-auth, static headers, or OAuth dynamic client registration.
+   Non-local OAuth callbacks need a reachable `PUBLIC_BASE_URL` → https://trueforge.dev/mcp-servers
+4. **Approvals** — default targets MCP tools annotated `write` or `destructive`;
+   configuration is API-oriented → https://trueforge.dev/create-agent/overview
 
 **Person 2 — credentials**
 Collect at the venue and put in `.env` (gitignored, never commit):
@@ -72,8 +87,39 @@ Sources: [truefoundry/trueforge](https://github.com/truefoundry/trueforge) ·
 [launch blog](https://www.truefoundry.com/blog/engineering/trueforge-open-source-agent-harness/) ·
 [VentureBeat](https://venturebeat.com/orchestration/truefoundrys-open-source-ai-agent-harness-trueforge-boasts-30-75-cheaper-task-completion-than-claude-managed-agents)
 
-⚠️ `https://trueforge.dev/docs/quickstart` returns **404** — find the real docs path before
-relying on it.
+Real docs live at **https://trueforge.dev/introduction** (not `/docs/quickstart`, which 404s):
+`/models` · `/mcp-servers` · `/skills` · `/sandbox` · `/key-features/overview` ·
+`/create-agent/overview` · `/api/overview`
+
+### Primitives worth knowing before you design anything
+
+- **Clarifying-question cards** — the harness can interrupt a run with a *structured,
+  selectable* card and resume from the choice. This is a built-in elicitation instrument.
+- **Skills require a sandbox.** They are Git-backed `SKILL.md` packages materialized at
+  `/opt/tfy/skills/...`. Skills and Daytona are coupled, not independent.
+- **Code Mode** writes Python *inside the sandbox* and calls MCP tools through a bridge,
+  so only the printed result enters model context.
+- **Generative UI** emits OpenUI snippets rendered through *registered React components*
+  (charts, tables, cards, forms). It does **not** execute arbitrary generated frontend code.
+- **Compaction** fires at ~80% of context or a 50,000-input-token fallback. A 90-second
+  run will not reach it — it must be forced to demo.
+- **Sessions** model `Agent → Session → Turn → Event → Delta`, streamed over SSE.
+- App version `0.1.4` (Aug 19). A `0.2.0-rc.0` prerelease and `charts/trueforge@0.1.6-rc.0`
+  exist — **do not conflate the chart version with the app version.**
+
+---
+
+## ⚠️ Deadline may not be 18:00 today — verify with organizers
+
+The official event site describes the **online** hackathon as **Aug 24–30**, with
+submission listed as **Aug 30, 20:00 London**. Our in-person brief says 18:00 PT today.
+Whether 18:00 PT is a separate in-person deadline is **UNVERIFIED**.
+
+**Ask an organizer or check Discord.** Operate against 18:00 PT until told otherwise —
+but if the online track really runs to Aug 30, that is up to a day more, and it changes
+what is worth attempting. Sources:
+[event](https://www.wemakedevs.org/hackathons/trueforge) ·
+[rules](https://www.wemakedevs.org/hackathons/trueforge/rules)
 
 ---
 

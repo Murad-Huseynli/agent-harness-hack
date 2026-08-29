@@ -1,8 +1,10 @@
 # Bright Data CLI — captured --help output
 
-Captured 2026-08-29 14:15 PT from `@brightdata/cli` v0.3.5 installed locally.
+Captured 2026-08-29 14:16 PT from `@brightdata/cli` v0.3.5 installed locally.
+Raw, unedited. This file is the evidence behind `brightdata-cli.md`.
 
 ## `brightdata --help`
+
 ```
 Usage: brightdata [options] [command]
 
@@ -36,6 +38,7 @@ Commands:
 ```
 
 ## `brightdata scraper --help`
+
 ```
 Usage: brightdata scraper [options] [command]
 
@@ -53,6 +56,7 @@ Commands:
 ```
 
 ## `brightdata scraper run --help`
+
 ```
 Usage: brightdata scraper run [options] <collector_id> [url]
 
@@ -94,10 +98,10 @@ Examples:
 
   # Save output as CSV (extension chooses format)
   $ brightdata scraper run c_mp3tuab31lswoxvpws https://news.ycombinator.com -o stories.csv
-
 ```
 
 ## `brightdata scraper heal --help`
+
 ```
 Usage: brightdata scraper heal [options] <collector_id> <prompt>
 
@@ -137,5 +141,115 @@ Examples:
 
   # Heal and save the result envelope (next_step tells you how to verify)
   $ brightdata scraper heal c_mp3tuab31lswoxvpws "Reviews stopped extracting after the page redesign" --pretty -o heal.json
+```
 
+## `brightdata scraper approve --help`
+
+```
+Usage: brightdata scraper approve [options] <collector_id>
+
+Approve (or --reject) a heal that is awaiting approval
+
+Arguments:
+  collector_id         Collector ID of the scraper whose heal is awaiting
+                       approval
+
+Options:
+  --reject             Reject the proposed fix instead of approving it.
+  --auto-save          Save the approved template automatically once the job
+                       completes successfully (sent as auto_save to the resume
+                       call).
+  --url <url>          Verify target woven into the next-step hint on success.
+  --timeout <seconds>  Polling timeout in seconds (default: 600)
+  -o, --output <path>  Write output to file
+  --json               Force JSON output
+  --pretty             Pretty-print JSON output
+  --legacy-output      Emit the bare AI-progress payload instead of the
+                       envelope.
+  --timing             Show request timing
+  -h, --help           display help for command
+
+Examples:
+  # Approve a heal that stopped at awaiting_approval, then verify
+  $ brightdata scraper approve c_mp3tuab31lswoxvpws --url https://example.com/product/1
+
+  # Reject a proposed fix and start over with a sharper heal prompt
+  $ brightdata scraper approve c_mp3tuab31lswoxvpws --reject
+```
+
+## `brightdata scraper create --help`
+
+```
+Usage: brightdata scraper create [options] <url> <description>
+
+Build a scraper from a natural-language description using AI
+
+Arguments:
+  url                      Target URL to scrape
+  description              Natural-language description of data to extract (max
+                           500 chars)
+
+Options:
+  --name <name>            Scraper template name (default:
+                           cli-scraper-<timestamp>)
+  --deliver-webhook <url>  Webhook URL for the deliver stub (default:
+                           https://example.com/webhook)
+  --timeout <seconds>      Polling timeout in seconds (default: 600)
+  --max-retries <n>        Max retries on the AI-Flow concurrent-job cap 429
+                           (default: 4). Each wait grows exponentially with
+                           jitter, up to ~4 min between attempts.
+  --no-retry               Fail immediately on 429 instead of waiting through
+                           the cap. Equivalent to --max-retries 0.
+  -o, --output <path>      Write output to file
+  --json                   Force JSON output
+  --pretty                 Pretty-print JSON output
+  --legacy-output          Emit the bare AI-progress payload (pre-v0.3 shape)
+                           instead of the new {collector_id, name, status, ...}
+                           envelope. For one-version migration only.
+  --timing                 Show request timing
+  -h, --help               display help for command
+
+Examples:
+  # Build a scraper for a public page (AI generation takes 5 to 10 minutes)
+  $ brightdata scraper create https://news.ycombinator.com "Extract the top 30 stories: title, url, points, author, comment count."
+
+  # Name the scraper and save the full AI output for inspection
+  $ brightdata scraper create https://www.ycombinator.com/companies?batch=W26 "For each company card, extract name, vertical, tagline, link" --name yc-w26 --pretty -o create.json
+
+  # Custom delivery webhook (default is a stub, set this when wiring to your own backend)
+  $ brightdata scraper create https://news.ycombinator.com "Extract top stories" --deliver-webhook https://your-app.test/scraper-callback
+```
+
+## `brightdata scrape --help`
+
+```
+Usage: brightdata scrape [options] <url>
+
+Scrape a URL using the Web Unlocker API
+
+Arguments:
+  url                    URL to scrape
+
+Options:
+  -f, --format <format>  Output format: markdown, html, screenshot, json
+                         (default: markdown)
+  --country <code>       ISO country code for geo-targeting (e.g. us, de)
+  --zone <name>          Web Unlocker zone name
+  --mobile               Use mobile user agent
+  --async                Submit asynchronously and return job ID
+  -o, --output <path>    Write output to file
+  --json                 Force JSON output
+  --pretty               Pretty-print JSON output
+  --timing               Show request timing
+  -h, --help             display help for command
+
+Examples:
+  # Scrape a public page and get markdown (default format)
+  $ brightdata scrape https://news.ycombinator.com
+
+  # Return JSON with response metadata, save to a file
+  $ brightdata scrape https://news.ycombinator.com --format json --pretty -o hn.json
+
+  # Geo-target Germany with a mobile user agent
+  $ brightdata scrape https://www.google.com/search?q=heise --country de --mobile
 ```

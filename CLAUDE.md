@@ -62,10 +62,12 @@ file so the coding assistant reuses them automatically. They do. Rules:
   never a one-off terminal command. Schema documented in `scrapers/README.md`.
 - Run scrapes **from the terminal**, never the web dashboard. Record the exact command
   in the target's `command` field so it is reproducible and diffable.
-- **Do not invent Bright Data CLI flags.** The verified command surface is documented in
-  [`scrapers/brightdata-cli.md`](scrapers/brightdata-cli.md) — the binary is `brightdata`,
-  and it reads `BRIGHTDATA_API_KEY`. If a command is not on that page, run `--help` and add
-  it there before using it. A guessed flag is a failed demo.
+- **Do not invent Bright Data CLI flags.** The verified surface is
+  [`scrapers/brightdata-cli.md`](scrapers/brightdata-cli.md), captured from real `--help`
+  output (raw capture: `scrapers/cli-help-output.md`). `brightdata` and `bdata` are the same
+  binary. **A command is only "verified" if its full signature including positional
+  arguments appears there** — a name alone is not enough. If anything is missing, run
+  `--help`, append the output to the capture file, and document the signature before use.
 - **Self-heal is human-supervised and can take up to 15 minutes.** Pressing Studio's Heal
   button is not an agentic repair pipeline; we build the detect → fixture → heal → validate
   → approve → promote → re-run loop ourselves. Never start a cold heal on stage.

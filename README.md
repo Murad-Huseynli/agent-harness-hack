@@ -103,6 +103,11 @@ then* personal utility, and only over the reversible remainder.
 There is no `dev` script yet, no TrueForge SDK dependency, and no Daytona key. Treat every
 capability sentence above the matrix as design intent until this table says otherwise.
 
+## Build
+
+Locked and handed off: **[`BUILD.md`](BUILD.md)**. The frozen event→attribute mapping is
+[`ladder/MAPPING.md`](ladder/MAPPING.md) — committed before any outcome was collected.
+
 ## Research
 
 Completed before any product code, so the build executes against evidence rather than a
